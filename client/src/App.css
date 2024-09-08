@@ -1,0 +1,14 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns items to the left */
+  padding: 20px; /* Adds space from the top and sides (optional) */
+  align-items: center;
+}
+
+.App a {
+  margin: 10px 0; /* Adds space between the links */
+  text-decoration: none;
+  font-size: 18px;
+  color: #333;
+}

@@ -1,0 +1,22 @@
+//main definido en el package.json
+
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const path = require("path");
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Add this line
+app.use(express.json());
+app.use(cors());
+
+const db = require("./models");
+
+//ROUTERS
+const postRouter = require("./routes/Posts");
+app.use("/posts", postRouter);
+
+db.sequelize.sync().then(() => {
+  app.listen(5000, () => {
+    console.log("server corriendo en puerto 5000");
+  });
+});

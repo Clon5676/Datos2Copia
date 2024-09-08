@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
+
 import "../Home.css";
 
 function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     axios
       .get("http://localhost:5000/posts")
       .then((response) => {
-        console.log(response.data);
         setListOfPosts(response.data);
       })
       .catch((error) => {
@@ -17,10 +19,19 @@ function Home() {
       });
   }, []);
 
+  const handlePostClick = (post) => {
+    console.log("Post clicked:", post);
+    navigate(`/post/${post.id}`); // Use navigate to change the route
+  };
+
   return (
     <div className="post-container">
       {listOfPosts.map((post, key) => (
-        <div className="post-box" key={key}>
+        <div
+          className="post-box"
+          key={key}
+          onClick={() => handlePostClick(post)} // Add onClick event
+        >
           <div className="post-header">
             <span>{post.username}</span>
           </div>
@@ -30,7 +41,7 @@ function Home() {
                 src={`http://localhost:5000${post.photoUrl}`}
                 alt="Post"
                 className="post-image"
-              />{" "}
+              />
             </div>
             <div className="post-details">
               <div className="post-text">{post.postText}</div>

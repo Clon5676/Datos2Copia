@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 1 * 1024 * 1024 }, // 1MB
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
   fileFilter: (req, file, cb) => {
     const fileTypes = /jpeg|jpg|png/;
     const mimeType = fileTypes.test(file.mimetype);
@@ -39,7 +39,7 @@ router.get("/", async (req, res) => {
     const listOfPosts = await Posts.findAll();
     res.json(listOfPosts);
   } catch (err) {
-    res.status(500).json({ error: "Error fetching posts" });
+    res.status(500).json({ error: "Error fetching all posts" });
   }
 });
 
@@ -59,7 +59,21 @@ router.post("/", upload.single("photo"), async (req, res) => {
     });
     res.json(newPost);
   } catch (err) {
-    res.status(500).json({ error: "Error creating post" });
+    if (err instanceof multer.MulterError) {
+      res.status(400).json({ error: err.message });
+    } else {
+      res.status(500).json({ error: "Error creating post" });
+    }
+  }
+});
+
+router.get("/byId/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const post = await Posts.findByPk(id);
+    res.json(post);
+  } catch (err) {
+    res.status(500).json({ error: "Error fetching specific post" });
   }
 });
 

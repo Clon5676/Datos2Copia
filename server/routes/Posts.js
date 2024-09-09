@@ -39,7 +39,7 @@ router.get("/", async (req, res) => {
     const listOfPosts = await Posts.findAll({
       include: {
         model: Dares,
-        attributes: ["dare"],
+        attributes: ["dare", "points", "id"],
         required: false, // Change to false if you want to include posts without dares
       },
     });
@@ -47,6 +47,26 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error("Error fetching posts:", err);
     res.status(500).json({ error: "Error fetching all posts" });
+  }
+});
+
+router.get("/byDare", async (req, res) => {
+  const { dareId } = req.query;
+
+  try {
+    const posts = await Posts.findAll({
+      where: { DareId: dareId },
+
+      include: {
+        model: Dares,
+        attributes: ["dare", "points", "id"],
+        required: false,
+      },
+    });
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts by DareId:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -80,7 +100,7 @@ router.get("/byId/:id", async (req, res) => {
     const post = await Posts.findByPk(id, {
       include: {
         model: Dares,
-        attributes: ["dare", "points"],
+        attributes: ["dare", "points", "id", "description"],
         required: false,
       },
     });

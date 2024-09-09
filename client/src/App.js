@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 import Post from "./pages/Post";
+import Dares from "./pages/Dares";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" exact element={<Home />} />
           <Route path="/createpost" exact element={<CreatePost />} />
           <Route path="/post/:id" exact element={<Post />} />
+          <Route path="/dare/:id" exact element={<Dares />} />
         </Routes>
       </Router>
     </div>

@@ -6,7 +6,7 @@
 
 .post-content {
   display: flex;
-  width: 80%; /* Adjust width as needed */
+  width: 80%;
   gap: 20px;
 }
 
@@ -44,13 +44,39 @@
 .post-dare {
   font-size: 16px;
   font-weight: bold;
-  margin-bottom: 10px;
   background-color: #ffeb99;
   padding: 8px;
   border-radius: 5px;
   color: #8a6d3b;
   border: 1px solid #f5c518;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dare-container {
+  display: flex;
+  gap: 20px;
+}
+
+.dare-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #ffeb99;
+  padding: 8px;
+  border-radius: 5px;
+  color: #8a6d3b;
+  border: 1px solid #f5c518;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dare-description {
+  flex: 2;
+  font-size: 14px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #555;
 }
 
 .post-footer {
@@ -99,8 +125,6 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Existing styles... */
-
 .comment-form {
   display: flex;
   flex-direction: column;
@@ -148,4 +172,69 @@
 
 .comment-item:last-child {
   border-bottom: none;
+}
+
+.dare-container {
+  display: flex;
+  gap: 20px;
+}
+
+.dare-title,
+.dare-description {
+  flex: 1; /* Asegura que ambos ocupen el mismo espacio */
+  font-size: 16px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  color: #555;
+}
+
+.dare-title {
+  background-color: #ffeb99;
+  border: 1px solid #f5c518;
+  color: #8a6d3b;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dare-description {
+  background-color: #ffffff;
+}
+
+/* Estilos existentes... */
+
+.dare-description {
+  flex: 2;
+  font-size: 14px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: #555;
+  display: flex;
+  flex-direction: column;
+}
+
+.description {
+  margin-bottom: 10px;
+}
+
+.tags-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tag-button {
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tag-button:hover {
+  background-color: #0056b3;
 }

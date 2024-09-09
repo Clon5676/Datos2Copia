@@ -1,29 +1,43 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import "../Post.css";
 
 export default function Post() {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
+  const [tags, setTags] = useState([]);
 
   useEffect(() => {
+    // Obtener detalles del post
     axios.get(`http://localhost:5000/posts/byId/${id}`).then((response) => {
       setPostObject(response.data);
     });
 
+    // Obtener comentarios del post
     axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
       setComments(response.data);
     });
   }, [id]);
 
+  useEffect(() => {
+    // Obtener tags del dare si postObject.Dare está definido
+    if (postObject.Dare && postObject.Dare.id) {
+      axios
+        .get(`http://localhost:5000/dares/${postObject.Dare.id}`)
+        .then((response) => {
+          setTags(response.data.Tags || []);
+        });
+    }
+  }, [postObject.Dare]);
+
   const handleCommentSubmit = (values, { resetForm }) => {
     axios
       .post("http://localhost:5000/comments", { ...values, PostId: id })
       .then(() => {
-        // Fetch comments again to include the new one
         axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
           setComments(response.data);
         });
@@ -32,6 +46,10 @@ export default function Post() {
       .catch((error) => {
         console.error("Error creating comment:", error);
       });
+  };
+
+  const handlePostObjectClick = (postObject) => {
+    navigate(`/dare/${postObject.Dare.id}`);
   };
 
   return (
@@ -49,8 +67,25 @@ export default function Post() {
             />
           </div>
           <div className="post-text">{postObject.postText}</div>
-          <div className="post-dare">
+          <div
+            className="post-dare"
+            onClick={() => handlePostObjectClick(postObject)}
+          >
             {postObject.Dare ? postObject.Dare.dare : "No dare information"}
+          </div>
+          <div className="dare-description">
+            {postObject.Dare && (
+              <>
+                <div className="description">{postObject.Dare.description}</div>
+                <div className="tags-container">
+                  {tags.map((tag, index) => (
+                    <button key={index} className="tag-button">
+                      {tag.tagName}
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
           <div className="post-footer">
             <div className="points">

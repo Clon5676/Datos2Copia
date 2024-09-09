@@ -48,6 +48,9 @@ function Home() {
               <div className="post-dare">{post.Dare.dare}</div>{" "}
               {/* Updated here */}
               <div className="post-footer">
+                <div className="points">
+                  Points: {post.Dare ? post.Dare.points : "N/A"}
+                </div>
                 <div className="reactions">
                   <span className="approve">👍 {post.approvals}</span>
                   <span className="disapprove">👎 {post.disapproval}</span>

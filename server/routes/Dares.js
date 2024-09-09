@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { sequelize, Dares } = require("../models");
+const { sequelize, Dares, Tags } = require("../models");
 
 router.get("/random", async (req, res) => {
   try {
@@ -19,5 +19,29 @@ router.get("/random", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+router.get("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const dare = await Dares.findByPk(id, {
+      include: {
+        model: Tags,
+        through: { attributes: [] }, // Excluir atributos de la tabla intermedia
+        attributes: ["tagName"], // Obtener solo el nombre del tag
+      },
+    });
+
+    if (dare) {
+      res.json(dare);
+    } else {
+      res.status(404).json({ error: "Dare not found" });
+    }
+  } catch (error) {
+    console.error("Error fetching dare with tags:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+module.exports = router;
 
 module.exports = router;

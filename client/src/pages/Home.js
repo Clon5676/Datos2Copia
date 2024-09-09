@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 
 import "../Home.css";
 
 function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -21,7 +21,7 @@ function Home() {
 
   const handlePostClick = (post) => {
     console.log("Post clicked:", post);
-    navigate(`/post/${post.id}`); // Use navigate to change the route
+    navigate(`/post/${post.id}`);
   };
 
   return (
@@ -30,7 +30,7 @@ function Home() {
         <div
           className="post-box"
           key={key}
-          onClick={() => handlePostClick(post)} // Add onClick event
+          onClick={() => handlePostClick(post)}
         >
           <div className="post-header">
             <span>{post.username}</span>
@@ -45,11 +45,9 @@ function Home() {
             </div>
             <div className="post-details">
               <div className="post-text">{post.postText}</div>
-              <div className="post-dare">{post.dare}</div>
+              <div className="post-dare">{post.Dare.dare}</div>{" "}
+              {/* Updated here */}
               <div className="post-footer">
-                <div className="points">
-                  Points: {post.approvals - post.disapproval}
-                </div>
                 <div className="reactions">
                   <span className="approve">👍 {post.approvals}</span>
                   <span className="disapprove">👎 {post.disapproval}</span>

@@ -3,3 +3,5 @@ packet .jason dependencies tiene lo instalado
 luego de descargar sequelize sequelize init
 npx create-react-app
 npm start en ambas
+npx sequelize db:seed:all
+npx sequelize db:seed --seed <seeder-filename>

@@ -1,10 +1,5 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // Clear existing data
-    await queryInterface.bulkDelete("Tags", null, {});
-    await queryInterface.bulkDelete("Dares", null, {});
-    await queryInterface.bulkDelete("DareTags", null, {});
-
     const tags = [
       "Físico",
       "Diversión",

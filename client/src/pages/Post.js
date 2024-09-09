@@ -49,10 +49,12 @@ export default function Post() {
             />
           </div>
           <div className="post-text">{postObject.postText}</div>
-          <div className="post-dare">{postObject.dare}</div>
+          <div className="post-dare">
+            {postObject.Dare ? postObject.Dare.dare : "No dare information"}
+          </div>
           <div className="post-footer">
             <div className="points">
-              Points: {postObject.approvals - postObject.disapproval}
+              Points: {postObject.Dare ? postObject.Dare.points : "N/A"}
             </div>
             <div className="reactions">
               <span className="approve">👍 {postObject.approvals}</span>

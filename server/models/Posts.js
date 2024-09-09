@@ -1,9 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Posts = sequelize.define("Posts", {
-    dare: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     postText: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -24,12 +20,27 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true,
     },
+    DareId: {
+      // Foreign key to reference Dares
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Dares", // The table name
+        key: "id", // The primary key in the Dares table
+      },
+      allowNull: false,
+    },
   });
 
   Posts.associate = (models) => {
+    Posts.belongsTo(models.Dares, {
+      // Association to Dares
+      foreignKey: "DareId",
+      onDelete: "CASCADE",
+    });
     Posts.hasMany(models.Comments, {
-      onDelete: "cascade",
+      onDelete: "CASCADE",
     });
   };
+
   return Posts;
 };

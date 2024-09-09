@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const { Posts } = require("../models");
+const { Posts, Dares } = require("../models"); // Ensure Dares is imported
 
 // Configure multer storage and file filter
 const storage = multer.diskStorage({
@@ -36,32 +36,39 @@ const upload = multer({
 
 router.get("/", async (req, res) => {
   try {
-    const listOfPosts = await Posts.findAll();
+    const listOfPosts = await Posts.findAll({
+      include: {
+        model: Dares,
+        attributes: ["dare"],
+        required: false, // Change to false if you want to include posts without dares
+      },
+    });
     res.json(listOfPosts);
   } catch (err) {
+    console.error("Error fetching posts:", err);
     res.status(500).json({ error: "Error fetching all posts" });
   }
 });
 
-// Use the correct `upload` middleware
 router.post("/", upload.single("photo"), async (req, res) => {
-  const { dare, postText, username, approvals, disapproval } = req.body;
+  const { postText, username, approvals, disapproval, DareId } = req.body;
   const photoUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
   try {
     const newPost = await Posts.create({
-      dare,
       postText,
       username,
       approvals,
       disapproval,
       photoUrl,
+      DareId,
     });
     res.json(newPost);
   } catch (err) {
     if (err instanceof multer.MulterError) {
       res.status(400).json({ error: err.message });
     } else {
+      console.error("Error creating post:", err);
       res.status(500).json({ error: "Error creating post" });
     }
   }
@@ -70,9 +77,20 @@ router.post("/", upload.single("photo"), async (req, res) => {
 router.get("/byId/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const post = await Posts.findByPk(id);
-    res.json(post);
+    const post = await Posts.findByPk(id, {
+      include: {
+        model: Dares,
+        attributes: ["dare", "points"],
+        required: false,
+      },
+    });
+    if (post) {
+      res.json(post);
+    } else {
+      res.status(404).json({ error: "Post not found" });
+    }
   } catch (err) {
+    console.error("Error fetching specific post:", err);
     res.status(500).json({ error: "Error fetching specific post" });
   }
 });

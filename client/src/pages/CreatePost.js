@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import "../CreatePost.css"; // Import your CSS file
 
 export default function CreatePost() {
+  const [dares, setDares] = useState([]);
+
+  useEffect(() => {
+    // Fetch random dares when component mounts
+    axios
+      .get("http://localhost:5000/dares/random")
+      .then((response) => {
+        setDares(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching dares:", error);
+      });
+  }, []);
+
   const initialValues = {
-    dare: "",
+    DareId: "", // Changed from 'dare' to 'DareId'
     postText: "",
     username: "",
     approvals: 0,
@@ -13,9 +28,8 @@ export default function CreatePost() {
     photo: null, // For the file input
   };
 
-  // Validation schema using Yup
   const validationSchema = Yup.object().shape({
-    dare: Yup.string().required("Dare is required"),
+    DareId: Yup.string().required("Dare is required"), // Changed from 'dare' to 'DareId'
     postText: Yup.string().required("Post Text is required"),
     username: Yup.string().required("Username is required"),
     approvals: Yup.number().min(0, "Approvals cannot be negative"),
@@ -23,7 +37,6 @@ export default function CreatePost() {
     photo: Yup.mixed().required("A photo is required"),
   });
 
-  // Handling form submission
   const onSubmit = (data, { resetForm }) => {
     const formData = new FormData(); // FormData for handling file uploads
     for (let key in data) {
@@ -46,60 +59,100 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="createPostPage">
+    <div className="create-post-container">
+      <h2>Create a New Post</h2>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
         validationSchema={validationSchema}
       >
         {({ setFieldValue }) => (
-          <Form>
-            <div>
-              <label>Dare: </label>
-              <Field name="dare" placeholder="Enter a dare" />
-              <ErrorMessage name="dare" component="div" />
+          <Form className="create-post-form">
+            <div className="form-group">
+              <label htmlFor="DareId">Dare:</label>
+              <Field as="select" name="DareId" className="form-field">
+                <option value="">Select a dare</option>
+                {dares.map((dare) => (
+                  <option key={dare.id} value={dare.id}>
+                    {dare.dare}
+                  </option>
+                ))}
+              </Field>
+              <ErrorMessage
+                name="DareId"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <div>
-              <label>Post Text: </label>
+            <div className="form-group">
+              <label htmlFor="postText">Post Text:</label>
               <Field
                 name="postText"
                 placeholder="Me costó mucho este desafio!"
+                className="form-field"
               />
-              <ErrorMessage name="postText" component="div" />
+              <ErrorMessage
+                name="postText"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <div>
-              <label>Username: </label>
-              <Field name="username" placeholder="Your username" />
-              <ErrorMessage name="username" component="div" />
+            <div className="form-group">
+              <label htmlFor="username">Username:</label>
+              <Field
+                name="username"
+                placeholder="Your username"
+                className="form-field"
+              />
+              <ErrorMessage
+                name="username"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <div>
-              <label>Approvals: </label>
-              <Field name="approvals" type="number" />
-              <ErrorMessage name="approvals" component="div" />
+            <div className="form-group">
+              <label htmlFor="approvals">Approvals:</label>
+              <Field name="approvals" type="number" className="form-field" />
+              <ErrorMessage
+                name="approvals"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <div>
-              <label>Disapprovals: </label>
-              <Field name="disapproval" type="number" />
-              <ErrorMessage name="disapproval" component="div" />
+            <div className="form-group">
+              <label htmlFor="disapproval">Disapprovals:</label>
+              <Field name="disapproval" type="number" className="form-field" />
+              <ErrorMessage
+                name="disapproval"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <div>
-              <label>Photo: </label>
+            <div className="form-group">
+              <label htmlFor="photo">Photo:</label>
               <input
                 type="file"
                 name="photo"
+                className="form-field"
                 onChange={(event) => {
                   setFieldValue("photo", event.target.files[0]);
                 }}
               />
-              <ErrorMessage name="photo" component="div" />
+              <ErrorMessage
+                name="photo"
+                component="div"
+                className="error-message"
+              />
             </div>
 
-            <button type="submit">Create Post</button>
+            <button type="submit" className="submit-button">
+              Create Post
+            </button>
           </Form>
         )}
       </Formik>

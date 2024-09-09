@@ -26,5 +26,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
+  Dares.associate = (models) => {
+    Dares.belongsToMany(models.Tags, { through: "DareTags" });
+    Dares.hasMany(models.Posts, {
+      foreignKey: "DareId",
+      onDelete: "CASCADE",
+    });
+  };
+
   return Dares;
 };

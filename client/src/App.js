@@ -62,9 +62,11 @@ function App() {
                 <Link to="/signup"> Signup </Link>
               </>
             ) : (
-              <button onClick={logout}> Logout </button>
+              <>
+                <button onClick={logout}> Logout </button>
+                <h1>{authState.username}</h1>
+              </>
             )}
-            <h1>{authState.username}</h1>
           </div>
           <Routes>
             <Route path="/" exact element={<Home />} />

@@ -24,7 +24,7 @@ function Login() {
         setAuthState({
           username: response.data.username,
           id: response.data.id,
-          state: true,
+          status: true,
         });
         navigate("/");
       }

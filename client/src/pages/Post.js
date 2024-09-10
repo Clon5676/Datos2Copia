@@ -36,7 +36,11 @@ export default function Post() {
 
   const handleCommentSubmit = (values, { resetForm }) => {
     axios
-      .post("http://localhost:5000/comments", { ...values, PostId: id })
+      .post(
+        "http://localhost:5000/comments",
+        { ...values, PostId: id },
+        { headers: { accessToken: localStorage.getItem("accessToken") } }
+      )
       .then(() => {
         axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
           setComments(response.data);
@@ -48,8 +52,12 @@ export default function Post() {
       });
   };
 
-  const handlePostObjectClick = (postObject) => {
+  const handleDareClick = (postObject) => {
     navigate(`/dare/${postObject.Dare.id}`);
+  };
+
+  const handleTagClick = (tag) => {
+    navigate(`/tag/${tag.id}`);
   };
 
   return (
@@ -69,7 +77,7 @@ export default function Post() {
           <div className="post-text">{postObject.postText}</div>
           <div
             className="post-dare"
-            onClick={() => handlePostObjectClick(postObject)}
+            onClick={() => handleDareClick(postObject)}
           >
             {postObject.Dare ? postObject.Dare.dare : "No dare information"}
           </div>
@@ -79,7 +87,11 @@ export default function Post() {
                 <div className="description">{postObject.Dare.description}</div>
                 <div className="tags-container">
                   {tags.map((tag, index) => (
-                    <button key={index} className="tag-button">
+                    <button
+                      key={index}
+                      className="tag-button"
+                      onClick={() => handleTagClick(tag)}
+                    >
                       {tag.tagName}
                     </button>
                   ))}
@@ -131,6 +143,7 @@ export default function Post() {
           <div className="comments-list">
             {comments.map((comment, index) => (
               <div key={index} className="comment-item">
+                <p>{comment.User.username}</p>
                 <p>{comment.commentBody}</p>
               </div>
             ))}

@@ -27,7 +27,7 @@ router.get("/:id", async (req, res) => {
       include: {
         model: Tags,
         through: { attributes: [] }, // Excluir atributos de la tabla intermedia
-        attributes: ["tagName"], // Obtener solo el nombre del tag
+        attributes: ["tagName", "id"], // Obtener solo el nombre del tag
       },
     });
 

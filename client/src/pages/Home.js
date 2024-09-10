@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import "../Home.css";
+import "../styles/HomeStyle.css";
 
 function Home() {
   const [listOfPosts, setListOfPosts] = useState([]);

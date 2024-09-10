@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const path = require("path");
-const { Posts, Dares } = require("../models"); // Ensure Dares is imported
+const { Posts, Dares, Tags } = require("../models"); // Ensure Dares is imported
 
 // Configure multer storage and file filter
 const storage = multer.diskStorage({
@@ -60,6 +60,26 @@ router.get("/byDare", async (req, res) => {
       include: {
         model: Dares,
         attributes: ["dare", "points", "id"],
+        required: false,
+      },
+    });
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts by DareId:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.get("/byTag", async (req, res) => {
+  const { tagId } = req.query;
+
+  try {
+    const posts = await Posts.findAll({
+      where: { DareId: tagId },
+
+      include: {
+        model: Tags,
+        attributes: ["tagName"],
         required: false,
       },
     });

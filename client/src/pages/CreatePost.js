@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import "../CreatePost.css"; // Import your CSS file
+import "../styles/CreatePostStyle.css"; // Import your CSS file
 
 export default function CreatePost() {
   const [dares, setDares] = useState([]);

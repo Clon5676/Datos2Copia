@@ -21,6 +21,9 @@ app.use("/comments", commentsRouter);
 const daresRouter = require("./routes/Dares");
 app.use("/dares", daresRouter);
 
+const usersRouter = require("./routes/Users");
+app.use("/auth", usersRouter);
+
 db.sequelize.sync().then(() => {
   app.listen(5000, () => {
     console.log("server corriendo en puerto 5000");

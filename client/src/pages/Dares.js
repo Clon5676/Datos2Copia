@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import "../Dares.css"; // Ensure this file exists and has correct styles
+import "../styles/DaresStyle.css"; // Ensure this file exists and has correct styles
 
 function Dares() {
   const { id } = useParams();

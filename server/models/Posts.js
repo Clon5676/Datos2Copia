@@ -21,11 +21,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
     },
     DareId: {
-      // Foreign key to reference Dares
       type: DataTypes.INTEGER,
       references: {
-        model: "Dares", // The table name
-        key: "id", // The primary key in the Dares table
+        model: "Dares",
+        key: "id",
       },
       allowNull: false,
     },
@@ -33,9 +32,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Posts.associate = (models) => {
     Posts.belongsTo(models.Dares, {
-      // Association to Dares
       foreignKey: "DareId",
-      onDelete: "CASCADE",
     });
     Posts.hasMany(models.Comments, {
       onDelete: "CASCADE",

@@ -6,6 +6,7 @@ const { validateToken } = require("../middlewares/AuthMiddleware");
 
 const { sign } = require("jsonwebtoken");
 
+//CREATE A USER (1)
 router.post("/", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -21,6 +22,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//CHECK IF USER EXSITS (2)
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -34,6 +36,7 @@ router.post("/login", async (req, res) => {
           error: "Combinación incorrecta de usuario y contraseña",
         });
       const accessToken = sign(
+        //ESTO SE PASA A TRAVES DEL TOKEN, ESTA INFO
         { username: user.username, id: user.id },
         "importantsecret"
       );
@@ -46,6 +49,7 @@ router.post("/login", async (req, res) => {
 
 module.exports = router;
 
+//VERIFICAR QUE EL TOKEN EN LOCALSTORAGE ES UN TOKEN VALIDO
 router.get("/check", validateToken, (req, res) => {
   try {
     res.json(req.user);

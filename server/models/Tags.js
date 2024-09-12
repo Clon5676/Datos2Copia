@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
 
   Tags.associate = (models) => {
     Tags.belongsToMany(models.Dares, { through: "DareTags" });
+    Tags.belongsToMany(models.Posts, { through: "PostTags" });
   };
 
   return Tags;

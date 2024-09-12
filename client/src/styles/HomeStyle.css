@@ -105,3 +105,23 @@
 .disapprove:hover {
   color: #c82333;
 }
+
+.stars {
+  display: flex;
+  cursor: pointer;
+}
+
+.star {
+  font-size: 24px;
+  color: #ddd;
+  transition: color 0.3s;
+}
+
+.star.filled {
+  color: #ffd700; /* Gold for filled stars */
+}
+
+.star:hover,
+.star:hover ~ .star {
+  color: #ffcc00;
+}

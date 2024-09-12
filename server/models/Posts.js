@@ -4,21 +4,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    username: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    approvals: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    disapproval: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
+
     photoUrl: {
       type: DataTypes.STRING,
       allowNull: true,
+    },
+    averageRating: {
+      type: DataTypes.FLOAT,
+      allowNull: true,
+      defaultValue: 0,
     },
     DareId: {
       type: DataTypes.INTEGER,
@@ -28,13 +22,28 @@ module.exports = (sequelize, DataTypes) => {
       },
       allowNull: false,
     },
+    UserId: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: "Users",
+        key: "id",
+      },
+      allowNull: false,
+    },
   });
 
   Posts.associate = (models) => {
+    Posts.belongsToMany(models.Tags, { through: "PostTags" });
     Posts.belongsTo(models.Dares, {
       foreignKey: "DareId",
     });
+    Posts.belongsTo(models.Users, {
+      foreignKey: "UserId",
+    });
     Posts.hasMany(models.Comments, {
+      onDelete: "CASCADE",
+    });
+    Posts.hasMany(models.Ratings, {
       onDelete: "CASCADE",
     });
   };

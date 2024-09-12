@@ -5,3 +5,9 @@ npx create-react-app
 npm start en ambas
 npx sequelize db:seed:all
 npx sequelize db:seed --seed <seeder-filename>
+
+
+TODO
+Creacion de posts. Que los posts jalen automaticamente el username y se introduzca en PostId
+Ver todos los campos donde se llamaba el post.username y pasarlo a post.UserId
+Que en la pestaña de posts no se pueda ver el rating, solo aceptado y no aceptado. 

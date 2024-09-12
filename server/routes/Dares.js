@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { sequelize, Dares, Tags } = require("../models");
 
+//GET RANDOM CHALLENGES (1)
 router.get("/random", async (req, res) => {
   try {
     // Count the total number of dares
@@ -20,6 +21,7 @@ router.get("/random", async (req, res) => {
   }
 });
 
+//GET THE TAGS OF A SPECIFIC DARE (2)
 router.get("/:id", async (req, res) => {
   try {
     const { id } = req.params;

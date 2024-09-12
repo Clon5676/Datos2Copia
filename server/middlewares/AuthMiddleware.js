@@ -7,6 +7,7 @@ const validateToken = (req, res, next) => {
 
   try {
     const validToken = verify(accessToken, "importantsecret");
+    //REQ.USER ES ACCESIBLE POR TODOS LO QUE USEN VALIDATETOKEN
     req.user = validToken;
 
     if (validToken) {

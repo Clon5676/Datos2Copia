@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import "../Post.css";
+import { AuthContext } from "../helpers/AuthContext";
 
 export default function Post() {
   const navigate = useNavigate();
@@ -10,6 +11,7 @@ export default function Post() {
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
+  const { authState } = useContext(AuthContext);
 
   useEffect(() => {
     // Obtener detalles del post
@@ -52,6 +54,23 @@ export default function Post() {
       });
   };
 
+  const deleteComment = (id) => {
+    axios
+      .delete(`http://localhost:5000/comments/delete/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        setComments(
+          comments.filter((val) => {
+            return val.id != id;
+          })
+        );
+      })
+      .catch((error) => {
+        console.error("Error deleteing comment:", error);
+      });
+  };
+
   const handleDareClick = (postObject) => {
     navigate(`/dare/${postObject.Dare.id}`);
   };
@@ -65,8 +84,9 @@ export default function Post() {
       <div className="post-content">
         <div className="post-details">
           <div className="post-header">
-            <span>{postObject.username}</span>
+            {postObject.User && <span>{postObject.User.username}</span>}
           </div>
+
           <div className="post-photo">
             <img
               src={`http://localhost:5000${postObject.photoUrl}`}
@@ -145,6 +165,15 @@ export default function Post() {
               <div key={index} className="comment-item">
                 <p>{comment.User.username}</p>
                 <p>{comment.commentBody}</p>
+                {authState.id === comment.UserId && (
+                  <button
+                    onClick={() => {
+                      deleteComment(comment.id);
+                    }}
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
           </div>

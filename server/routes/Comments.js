@@ -3,6 +3,7 @@ const router = express.Router();
 const { Comments, Users } = require("../models");
 const { validateToken } = require("../middlewares/AuthMiddleware");
 
+//GET COMMENTS OF A SPECIFIC POST (1)
 router.get("/:postId", async (req, res) => {
   try {
     const postId = req.params.postId;
@@ -20,6 +21,7 @@ router.get("/:postId", async (req, res) => {
   }
 });
 
+//POST A COMMENT
 router.post("/", validateToken, async (req, res) => {
   try {
     const comment = req.body;
@@ -32,6 +34,19 @@ router.post("/", validateToken, async (req, res) => {
   }
 });
 
-//router.delete()
+//DELETE A COMENT
+router.delete("/delete/:commentId", validateToken, async (req, res) => {
+  try {
+    const commentId = req.params.commentId;
+    await Comments.destroy({
+      where: {
+        id: commentId,
+      },
+    });
+    res.json("comentario borrado");
+  } catch (err) {
+    res.status(500).json({ error: "Error deleting comments" });
+  }
+});
 
 module.exports = router;

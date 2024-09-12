@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-//import "../Dares.css"; // Ensure this file exists and has correct styles
+import "../styles/DaresStyle.css"; // Ensure this file exists and has correct styles
 
 function Tags() {
-  const { id } = useParams();
+  const { id } = useParams(); // Tag ID from URL parameter
   const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
-  const [dare, setDare] = useState(null); // State to store the dare information
+  const [tag, setTag] = useState(null); // State to store the tag information
   const [loading, setLoading] = useState(false);
 
-  const fetchPostsAndDare = async () => {
+  const fetchPostsAndTag = async () => {
     setLoading(true);
 
     try {
-      const response = await axios.get(`http://localhost:5000/posts/byTag`, {
-        params: {
-          tagId: id,
-          // Fetch only the first page
-        },
-      });
+      const postsResponse = await axios.get(
+        `http://localhost:5000/posts/byTag`,
+        {
+          params: { TagId: id },
+        }
+      );
+      setPosts(postsResponse.data);
 
-      setPosts(response.data);
-
-      // Fetch the dare information separately if it's not included in the posts response
-      const dareResponse = await axios.get(`http://localhost:5000/dares/${id}`);
-      setDare(dareResponse.data);
+      // Fetch tag information separately if needed
     } catch (error) {
-      console.error("Error fetching posts or dare:", error);
+      console.error("Error fetching posts or tag:", error);
       // Handle error gracefully (e.g., show a message to the user)
     } finally {
       setLoading(false);
@@ -35,7 +32,7 @@ function Tags() {
   };
 
   useEffect(() => {
-    fetchPostsAndDare();
+    fetchPostsAndTag();
   }, [id]);
 
   const handlePostClick = (post) => {
@@ -44,14 +41,14 @@ function Tags() {
 
   return (
     <div className="post-container">
-      {dare && (
+      {tag && (
         <div className="dare-info">
-          <h2>{dare.dare}</h2>
-          <p>{dare.description}</p>
+          <h2>{tag.tagName}</h2>
+          {/* You can add more tag details here if needed */}
         </div>
       )}
       {posts.length === 0 && !loading && (
-        <div>No posts found for this dare.</div>
+        <div>No posts found for this tag.</div>
       )}
       {posts.map((post) => (
         <div
@@ -60,7 +57,7 @@ function Tags() {
           onClick={() => handlePostClick(post)}
         >
           <div className="post-header">
-            <span>{post.username}</span>
+            <span>{post.User && <span>{post.User.username}</span>}</span>
           </div>
           <div className="post-content">
             <div className="post-photo">

@@ -60,7 +60,7 @@ function Dares() {
           onClick={() => handlePostClick(post)}
         >
           <div className="post-header">
-            <span>{post.username}</span>
+            <span>{post.User && <span>{post.User.username}</span>}</span>
           </div>
           <div className="post-content">
             <div className="post-photo">

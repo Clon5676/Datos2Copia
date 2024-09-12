@@ -88,7 +88,10 @@ function Home() {
     <div className="post-container">
       {listOfPosts.map((post, key) => (
         <div className="post-box" key={key}>
-          <div className="post-header">
+          <div
+            className="post-header"
+            onClick={() => navigate(`/profile/${post.User.id}`)}
+          >
             <span>{post.User.username}</span>
           </div>
           <div className="post-content" onClick={() => handlePostClick(post)}>
@@ -105,6 +108,8 @@ function Home() {
             </div>
           </div>
           <div className="post-footer">
+            {" "}
+            My rating:
             {renderStars(post.id)} {/* Render star rating if logged in */}
             <div className="points">
               Points: {post.Dare ? post.Dare.points : "N/A"}

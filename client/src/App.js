@@ -7,6 +7,7 @@ import Dares from "./pages/Dares";
 import Tags from "./pages/Tags";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Profile from "./pages/Profile";
 import { AuthContext } from "./helpers/AuthContext";
 import { useState, useEffect } from "react";
 import axios from "axios";
@@ -54,7 +55,6 @@ function App() {
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
           <div className="navbar">
-            <Link to="/createpost"> Create a Post </Link>
             <Link to="/"> HomePage </Link>
             {!authState.status ? (
               <>
@@ -63,8 +63,12 @@ function App() {
               </>
             ) : (
               <>
+                <Link to="/createpost"> Create a Post </Link>
                 <button onClick={logout}> Logout </button>
-                <h1>{authState.username}</h1>
+                {/* Use Link to navigate to the profile */}
+                <Link to={`/profile/${authState.id}`}>
+                  <h1>{authState.username}</h1>
+                </Link>
               </>
             )}
           </div>
@@ -76,6 +80,7 @@ function App() {
             <Route path="/tag/:id" exact element={<Tags />} />
             <Route path="/login" exact element={<Login />} />
             <Route path="/signup" exact element={<Signup />} />
+            <Route path="/profile/:id" exact element={<Profile />} />
           </Routes>
         </Router>
       </AuthContext.Provider>

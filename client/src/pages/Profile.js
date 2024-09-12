@@ -1,38 +1,25 @@
 import React, { useEffect, useState, useContext } from "react";
-import axios from "axios";
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../helpers/AuthContext";
+import axios from "axios";
 
-import { useParams, useNavigate } from "react-router-dom";
-import "../styles/DaresStyle.css"; // Ensure this file exists and has correct styles
-
-function Dares() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [listOfPosts, setListOfPosts] = useState([]);
+export default function Profile() {
+  let { id } = useParams();
+  const [username, setUsername] = useState("");
   const [userRatings, setUserRatings] = useState({});
-  const [dare, setDare] = useState(null); // State to store the dare information
-  const [loading, setLoading] = useState(false);
+  const [listOfPosts, setListOfPosts] = useState([]);
+  const navigate = useNavigate();
   const { authState } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchPostsAndDare = async () => {
-      try {
-        const postsResponse = await axios.get(
-          `http://localhost:5000/posts/byDare/${id}`
-        );
-        setListOfPosts(postsResponse.data);
-
-        const dareResponse = await axios.get(
-          `http://localhost:5000/dares/${id}`
-        );
-        setDare(dareResponse.data);
-      } catch (error) {
-        console.error("Error fetching posts or dare:", error);
-      }
-    };
-
-    fetchPostsAndDare();
-  }, [id]);
+    axios.get(`http://localhost:5000/auth/basicinfo/${id}`).then((response) => {
+      setUsername(response.data.username);
+    });
+    axios.get(`http://localhost:5000/posts/byuserid/${id}`).then((response) => {
+      setListOfPosts(response.data);
+    });
+  }, []);
 
   useEffect(() => {
     if (authState.status) {
@@ -99,18 +86,9 @@ function Dares() {
 
   return (
     <div className="post-container">
-      {dare && (
-        <div className="dare-info">
-          <h2>{dare.dare}</h2>
-          <p>{dare.description}</p>
-        </div>
-      )}
       {listOfPosts.map((post, key) => (
         <div className="post-box" key={key}>
-          <div
-            className="post-header"
-            onClick={() => navigate(`/profile/${post.User.id}`)}
-          >
+          <div className="post-header">
             <span>{post.User.username}</span>
           </div>
           <div className="post-content" onClick={() => handlePostClick(post)}>
@@ -127,7 +105,6 @@ function Dares() {
             </div>
           </div>
           <div className="post-footer">
-            My rating:
             {renderStars(post.id)} {/* Render star rating if logged in */}
             <div className="points">
               Points: {post.Dare ? post.Dare.points : "N/A"}
@@ -138,5 +115,3 @@ function Dares() {
     </div>
   );
 }
-
-export default Dares;

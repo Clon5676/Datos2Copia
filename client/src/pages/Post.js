@@ -11,19 +11,35 @@ export default function Post() {
   const [postObject, setPostObject] = useState({});
   const [comments, setComments] = useState([]);
   const [tags, setTags] = useState([]);
+  const [userRating, setUserRating] = useState(0); // Add this line
   const { authState } = useContext(AuthContext);
 
   useEffect(() => {
     // Obtener detalles del post
     axios.get(`http://localhost:5000/posts/byId/${id}`).then((response) => {
       setPostObject(response.data);
+      setUserRating(response.data.userRating || 0); // Set user rating
     });
 
     // Obtener comentarios del post
     axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
       setComments(response.data);
     });
-  }, [id]);
+
+    // Obtener ratings del post
+    if (authState.status) {
+      axios
+        .get(`http://localhost:5000/ratings/${id}`, {
+          headers: { accessToken: localStorage.getItem("accessToken") },
+        })
+        .then((response) => {
+          setUserRating(response.data.ratingValue || 0);
+        })
+        .catch((error) => {
+          console.error("Error fetching rating:", error);
+        });
+    }
+  }, [id, authState.status]);
 
   useEffect(() => {
     // Obtener tags del dare si postObject.Dare está definido
@@ -67,7 +83,17 @@ export default function Post() {
         );
       })
       .catch((error) => {
-        console.error("Error deleteing comment:", error);
+        console.error("Error deleting comment:", error);
+      });
+  };
+
+  const deletePost = (id) => {
+    axios
+      .delete(`http://localhost:5000/posts/${id}`, {
+        headers: { accessToken: localStorage.getItem("accessToken") },
+      })
+      .then(() => {
+        navigate("/");
       });
   };
 
@@ -79,12 +105,58 @@ export default function Post() {
     navigate(`/tag/${tag.id}`);
   };
 
+  const handleStarClick = (rating) => {
+    if (authState.status) {
+      axios
+        .post(
+          `http://localhost:5000/ratings`,
+          { PostId: id, ratingValue: rating },
+          { headers: { accessToken: localStorage.getItem("accessToken") } }
+        )
+        .then(() => {
+          setUserRating(rating);
+          axios
+            .get(`http://localhost:5000/posts/byId/${id}`)
+            .then((response) => {
+              setPostObject(response.data);
+            });
+        })
+        .catch((error) => {
+          console.error("Error submitting rating:", error);
+        });
+    }
+  };
+
+  const stars = [1, 2, 3, 4, 5].map((rating) => (
+    <span
+      key={rating}
+      className={`star ${userRating >= rating ? "filled" : ""}`}
+      onClick={() => handleStarClick(rating)}
+    >
+      ★
+    </span>
+  ));
+
   return (
     <div className="post-page">
       <div className="post-content">
         <div className="post-details">
           <div className="post-header">
-            {postObject.User && <span>{postObject.User.username}</span>}
+            {/* Safely access username with optional chaining */}
+            {postObject.User?.username && (
+              <span>{postObject.User.username}</span>
+            )}
+
+            {/* Check if authState and postObject.User are available */}
+            {authState.username === postObject.User?.username && (
+              <button
+                onClick={() => {
+                  deletePost(postObject.id);
+                }}
+              >
+                Delete Post
+              </button>
+            )}
           </div>
 
           <div className="post-photo">
@@ -124,8 +196,11 @@ export default function Post() {
               Points: {postObject.Dare ? postObject.Dare.points : "N/A"}
             </div>
             <div className="reactions">
-              <span className="approve">👍 {postObject.approvals}</span>
-              <span className="disapprove">👎 {postObject.disapproval}</span>
+              <div className="stars">My rating: {stars}</div>
+              <div>
+                A post is approved if its overall rating is over 2.5
+                {postObject.averageRating < 2.5 ? "Disapproved" : "Approved"}
+              </div>
             </div>
           </div>
         </div>

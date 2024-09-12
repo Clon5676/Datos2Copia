@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
     ratingValue: {
       type: DataTypes.INTEGER,
       allowNull: false,
+      defaultValue: 0, // Set default value to 0
     },
   });
 

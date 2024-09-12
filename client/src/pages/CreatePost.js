@@ -1,14 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import "../styles/CreatePostStyle.css"; // Import your CSS file
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../helpers/AuthContext";
 
 export default function CreatePost() {
   const [dares, setDares] = useState([]);
+  const { authState } = useContext(AuthContext);
+
+  let navigate = useNavigate();
 
   useEffect(() => {
     // Fetch random dares when component mounts
+    if (!authState.status) {
+      navigate("/login");
+    }
     axios
       .get("http://localhost:5000/dares/random")
       .then((response) => {
@@ -20,37 +28,33 @@ export default function CreatePost() {
   }, []);
 
   const initialValues = {
-    DareId: "", // Changed from 'dare' to 'DareId'
+    DareId: "", // Dare selection
     postText: "",
-    username: "",
-    approvals: 0,
-    disapproval: 0,
-    photo: null, // For the file input
+    photo: null, // File input for photo
   };
 
   const validationSchema = Yup.object().shape({
-    DareId: Yup.string().required("Dare is required"), // Changed from 'dare' to 'DareId'
+    DareId: Yup.string().required("Dare is required"),
     postText: Yup.string().required("Post Text is required"),
-    username: Yup.string().required("Username is required"),
-    approvals: Yup.number().min(0, "Approvals cannot be negative"),
-    disapproval: Yup.number().min(0, "Disapprovals cannot be negative"),
     photo: Yup.mixed().required("A photo is required"),
   });
 
   const onSubmit = (data, { resetForm }) => {
-    const formData = new FormData(); // FormData for handling file uploads
+    const formData = new FormData(); // Handling file uploads with FormData
     for (let key in data) {
-      formData.append(key, data[key]); // Append all fields, including 'photo'
+      formData.append(key, data[key]); // Append fields, including 'photo'
     }
 
     axios
       .post("http://localhost:5000/posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Required for file uploads
+          accessToken: localStorage.getItem("accessToken"),
         },
       })
       .then((response) => {
         console.log("Post created:", response.data);
+        navigate("/");
         resetForm();
       })
       .catch((error) => {
@@ -89,45 +93,11 @@ export default function CreatePost() {
               <label htmlFor="postText">Post Text:</label>
               <Field
                 name="postText"
-                placeholder="Me costó mucho este desafio!"
+                placeholder="Describe your challenge!"
                 className="form-field"
               />
               <ErrorMessage
                 name="postText"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="username">Username:</label>
-              <Field
-                name="username"
-                placeholder="Your username"
-                className="form-field"
-              />
-              <ErrorMessage
-                name="username"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="approvals">Approvals:</label>
-              <Field name="approvals" type="number" className="form-field" />
-              <ErrorMessage
-                name="approvals"
-                component="div"
-                className="error-message"
-              />
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="disapproval">Disapprovals:</label>
-              <Field name="disapproval" type="number" className="form-field" />
-              <ErrorMessage
-                name="disapproval"
                 component="div"
                 className="error-message"
               />

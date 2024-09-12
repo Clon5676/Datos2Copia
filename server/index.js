@@ -27,6 +27,9 @@ app.use("/auth", usersRouter);
 const ratingsRouter = require("./routes/Ratings");
 app.use("/ratings", ratingsRouter);
 
+const tagsRouter = require("./routes/Tags");
+app.use("/tags", tagsRouter);
+
 db.sequelize.sync().then(() => {
   app.listen(5000, () => {
     console.log("server corriendo en puerto 5000");

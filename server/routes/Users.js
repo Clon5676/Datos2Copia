@@ -47,12 +47,10 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
-
 //VERIFICAR QUE EL TOKEN EN LOCALSTORAGE ES UN TOKEN VALIDO
-router.get("/check", validateToken, (req, res) => {
+router.get("/check", validateToken, async (req, res) => {
   try {
-    res.json(req.user);
+    await res.json(req.user);
   } catch (err) {
     console.error("Error checking if logged", err);
     res.status(500).json({
@@ -61,3 +59,20 @@ router.get("/check", validateToken, (req, res) => {
     });
   }
 });
+
+router.get("/basicinfo/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const basicInfo = await Users.findByPk(id, {
+      attributes: { exclude: ["password"] },
+    });
+    res.json(basicInfo);
+  } catch (err) {
+    console.error("Error al traer info de usuario", err);
+    res.status(500).json({
+      error: "Error fetching user basicinfo",
+    });
+  }
+});
+
+module.exports = router;

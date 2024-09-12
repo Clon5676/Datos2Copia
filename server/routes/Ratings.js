@@ -75,4 +75,21 @@ router.get("/", validateToken, async (req, res) => {
   }
 });
 
+//Get the user rating for one specific post (3)
+router.get("/:postId", validateToken, async (req, res) => {
+  const UserId = req.user.id;
+  const postId = req.params.postId;
+
+  try {
+    const userRatings = await Ratings.findOne({
+      where: { UserId: UserId, PostId: postId },
+    });
+
+    res.json(userRatings);
+  } catch (error) {
+    console.error("Error fetching ratings:", error);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
 module.exports = router;

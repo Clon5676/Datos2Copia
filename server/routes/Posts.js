@@ -49,7 +49,7 @@ router.get("/", async (req, res) => {
         },
         {
           model: Users,
-          attributes: ["username"],
+          attributes: ["username", "id"],
           required: true, // Ensures only posts with users are included
         },
       ],
@@ -62,12 +62,12 @@ router.get("/", async (req, res) => {
 });
 
 //GET ALL POSTS WITH A SPECIFIC DARE (2)
-router.get("/byDare", async (req, res) => {
-  const { dareId } = req.query;
+router.get("/byDare/:id", async (req, res) => {
+  const DareId = req.params.id;
 
   try {
     const posts = await Posts.findAll({
-      where: { DareId: dareId },
+      where: { DareId: DareId },
       include: [
         {
           model: Dares,
@@ -76,7 +76,7 @@ router.get("/byDare", async (req, res) => {
         },
         {
           model: Users,
-          attributes: ["username"],
+          attributes: ["username", "id"],
           required: true, // Ensures only posts with users are included
         },
       ],
@@ -90,8 +90,8 @@ router.get("/byDare", async (req, res) => {
 
 //GET ALL POSTS WITH AN ESPECIFIC TAG (3)
 
-router.get("/byTag", async (req, res) => {
-  const { TagId } = req.query; // Get tagId from query parameters
+router.get("/byTag/:id", async (req, res) => {
+  const TagId = req.params.id; // Get tagId from query parameters
 
   try {
     // Fetch posts associated with the given tagId
@@ -104,8 +104,13 @@ router.get("/byTag", async (req, res) => {
         },
         {
           model: Users,
-          attributes: ["username"],
+          attributes: ["username", "id"],
           required: true, // Include user details if needed
+        },
+        {
+          model: Dares,
+          attributes: ["dare", "points", "id"],
+          required: false,
         },
       ],
     });
@@ -146,7 +151,37 @@ router.get("/byId/:id", async (req, res) => {
   }
 });
 
-//POST create (5)
+//GET userposts (5)
+router.get("/byuserid/:id", async (req, res) => {
+  try {
+    const UserId = req.params.id;
+    const listOfPosts = await Posts.findAll({
+      where: { UserId: UserId },
+      include: [
+        {
+          model: Dares,
+          attributes: ["dare", "points", "id"],
+          required: false,
+        },
+        {
+          model: Users,
+          attributes: ["username"],
+          required: true, // Ensures only posts with users are included
+        },
+      ],
+    });
+    if (listOfPosts) {
+      res.json(listOfPosts);
+    } else {
+      res.status(404).json({ error: "Post not found" });
+    }
+  } catch (err) {
+    console.error("Error fetching specific post:", err);
+    res.status(500).json({ error: "Error fetching specific post" });
+  }
+});
+
+//POST create (6)
 
 router.post("/", validateToken, upload.single("photo"), async (req, res) => {
   const { postText, DareId } = req.body;
@@ -190,6 +225,21 @@ router.post("/", validateToken, upload.single("photo"), async (req, res) => {
       console.error("Error creating post:", err);
       res.status(500).json({ error: "Error creating post" });
     }
+  }
+});
+
+//POST delete (7)
+router.delete("/:postId", validateToken, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    await Posts.destroy({
+      where: {
+        id: postId,
+      },
+    });
+    res.json("comentario borrado");
+  } catch (err) {
+    res.status(500).json({ error: "Error deleting post" });
   }
 });
 

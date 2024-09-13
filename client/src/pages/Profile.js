@@ -19,7 +19,7 @@ export default function Profile() {
     axios.get(`http://localhost:5000/posts/byuserid/${id}`).then((response) => {
       setListOfPosts(response.data);
     });
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (authState.status) {
@@ -51,7 +51,7 @@ export default function Profile() {
           { PostId: postId, ratingValue },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         )
-        .then((response) => {
+        .then(() => {
           setUserRatings((prevRatings) => ({
             ...prevRatings,
             [postId]: ratingValue,
@@ -85,33 +85,40 @@ export default function Profile() {
   };
 
   return (
-    <div className="post-container">
-      {listOfPosts.map((post, key) => (
-        <div className="post-box" key={key}>
-          <div className="post-header">
-            <span>{post.User.username}</span>
-          </div>
-          <div className="post-content" onClick={() => handlePostClick(post)}>
-            <div className="post-photo">
-              <img
-                src={`http://localhost:5000${post.photoUrl}`}
-                alt="Post"
-                className="post-image"
-              />
+    <div className="profile-container">
+      {/* Conditionally render text based on the user's id */}
+      <h1>
+        {authState.id === parseInt(id) ? "My profile" : `Page of: ${username}`}
+      </h1>
+
+      <div className="post-container">
+        {listOfPosts.map((post, key) => (
+          <div className="post-box" key={key}>
+            <div className="post-header">
+              <span>{post.User.username}</span>
             </div>
-            <div className="post-details">
-              <div className="post-text">{post.postText}</div>
-              <div className="post-dare">{post.Dare.dare}</div>
+            <div className="post-content" onClick={() => handlePostClick(post)}>
+              <div className="post-photo">
+                <img
+                  src={`http://localhost:5000${post.photoUrl}`}
+                  alt="Post"
+                  className="post-image"
+                />
+              </div>
+              <div className="post-details">
+                <div className="post-text">{post.postText}</div>
+                <div className="post-dare">{post.Dare.dare}</div>
+              </div>
+            </div>
+            <div className="post-footer">
+              {renderStars(post.id)} {/* Render star rating if logged in */}
+              <div className="points">
+                Points: {post.Dare ? post.Dare.points : "N/A"}
+              </div>
             </div>
           </div>
-          <div className="post-footer">
-            {renderStars(post.id)} {/* Render star rating if logged in */}
-            <div className="points">
-              Points: {post.Dare ? post.Dare.points : "N/A"}
-            </div>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }

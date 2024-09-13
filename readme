@@ -6,9 +6,27 @@ npm start en ambas
 npx sequelize db:seed:all
 npx sequelize db:seed --seed <seeder-filename>
 
-
 TODO
-Creacion de posts. Que los posts jalen automaticamente el username y se introduzca en PostId
-Ver todos los campos donde se llamaba el post.username y pasarlo a post.UserId
-Que en la pestaña de posts no se pueda ver el rating, solo aceptado y no aceptado. 
-Que el createPost refleje los desafios. 
+en la pagina de profile que muestre los puntos de los usuarios. Esto requeriria nuevo modelo
+IDEA:
+Cuando se actualize el avg rating que un campo automaticamente diga true or false y que sume los trues.
+En la otra tabla que se guarde el puntaje y el nombre de usuarios
+Retos diarios, semanales, por años.
+
+PARA CORRER POR PRIMERA VEZ EL CODIGO
+
+1. En el root directory (DATOS2) correr:
+   docker-compose up
+2. Ir a client y correr:
+   npm install
+   npm start
+3. Ir a server y correrÑ
+   npm install
+   npx sequelize db:seed:all
+   npm start
+
+LUEGO DE HABERLO CORRIDO UNA VEZ PARA VOLVERLO A CORRER:
+
+1. Iniciar el contenedor en docker desktop o con linea de comando (Yo lo hago con desktop)
+2. Ir a client y npm start
+3. Ir a server y npm start

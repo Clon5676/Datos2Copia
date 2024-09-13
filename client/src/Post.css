@@ -81,8 +81,22 @@
 
 .post-footer {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Change from row to column */
+  gap: 10px; /* Add some space between items */
+  align-items: center; /* Center-align items */
+}
+
+.delete-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #dc3545;
+  color: #fff;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #c82333;
 }
 
 .points {

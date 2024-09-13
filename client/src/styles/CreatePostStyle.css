@@ -1,62 +1,97 @@
-.create-post-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 2rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+/* Main page container with centered content */
+.post-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f0f2f5;
+  padding: 20px;
 }
 
-h2 {
-  text-align: center;
-  color: #333;
-}
-
-.create-post-form {
+/* Centered card for the post form and content */
+.post-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 600px; /* Fixed width for the card */
+  text-align: center; /* Center text in the card */
   display: flex;
   flex-direction: column;
+  gap: 20px;
 }
 
-.form-group {
-  margin-bottom: 1rem;
-}
-
-label {
+/* Styling for headers inside the card */
+.post-header {
   font-weight: bold;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #555;
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form field styling */
+.form-group {
+  margin-bottom: 20px;
+  text-align: left; /* Align labels and inputs to the left */
 }
 
 .form-field {
   width: 100%;
-  padding: 0.8rem;
+  padding: 10px;
+  border-radius: 5px;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  font-size: 16px;
   box-sizing: border-box;
 }
 
-.form-field:focus {
-  border-color: #007bff;
-  outline: none;
+.form-group label {
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+  color: #333;
 }
 
-.error-message {
-  color: #e74c3c;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-}
-
+/* Submit button */
 .submit-button {
-  background-color: #007bff;
-  color: white;
-  padding: 0.8rem;
+  padding: 10px 20px;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  width: 100%;
 }
 
 .submit-button:hover {
   background-color: #0056b3;
+}
+
+.submit-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Styling for error messages */
+.error-message {
+  color: red;
+  font-size: 12px;
+}
+
+/* Post photo display inside the card */
+.post-photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .post-card {
+    padding: 20px;
+    max-width: 100%;
+  }
 }

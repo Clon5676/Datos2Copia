@@ -36,7 +36,7 @@ function Signup() {
     <>
       <div className="title-box">
         <div className="logo"></div>
-        <h1 className="login-title">CineMaestro</h1>
+        <h1 className="login-title">DareYou</h1>
       </div>
       <div className="login-box">
         <h2>Registrarse</h2>

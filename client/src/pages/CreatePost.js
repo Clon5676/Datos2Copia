@@ -63,8 +63,9 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="create-post-container">
-      <h2>Create a New Post</h2>
+  <div className="post-page">
+    <div className="post-card">
+      <h2 className="post-header">Create a New Post</h2>
       <Formik
         initialValues={initialValues}
         onSubmit={onSubmit}
@@ -82,11 +83,7 @@ export default function CreatePost() {
                   </option>
                 ))}
               </Field>
-              <ErrorMessage
-                name="DareId"
-                component="div"
-                className="error-message"
-              />
+              <ErrorMessage name="DareId" component="div" className="error-message" />
             </div>
 
             <div className="form-group">
@@ -96,11 +93,7 @@ export default function CreatePost() {
                 placeholder="Describe your challenge!"
                 className="form-field"
               />
-              <ErrorMessage
-                name="postText"
-                component="div"
-                className="error-message"
-              />
+              <ErrorMessage name="postText" component="div" className="error-message" />
             </div>
 
             <div className="form-group">
@@ -113,19 +106,15 @@ export default function CreatePost() {
                   setFieldValue("photo", event.target.files[0]);
                 }}
               />
-              <ErrorMessage
-                name="photo"
-                component="div"
-                className="error-message"
-              />
+              <ErrorMessage name="photo" component="div" className="error-message" />
             </div>
 
-            <button type="submit" className="submit-button">
-              Create Post
-            </button>
+            <button type="submit" className="submit-button">Create Post</button>
           </Form>
         )}
       </Formik>
     </div>
-  );
+  </div>
+);
+
 }

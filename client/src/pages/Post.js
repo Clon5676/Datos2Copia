@@ -238,8 +238,12 @@ export default function Post() {
           <div className="comments-list">
             {comments.map((comment, index) => (
               <div key={index} className="comment-item">
-                <p>{comment.User.username}</p>
-                <p>{comment.commentBody}</p>
+                {/* Username inside a styled square */}
+                <div className="comment-username">{comment.User.username}</div>
+                
+                {/* Comment text */}
+                <div className="comment-text">{comment.commentBody}</div>
+                
                 {authState.id === comment.UserId && (
                   <button
                     onClick={() => {

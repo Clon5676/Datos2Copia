@@ -1,4 +1,5 @@
 import "./styles/HomeStyle.css";
+import "./styles/AppStyle.css"; // Import the new CSS file
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
@@ -54,24 +55,28 @@ function App() {
     <div className="App">
       <AuthContext.Provider value={{ authState, setAuthState }}>
         <Router>
-          <div className="navbar">
-            <Link to="/"> HomePage </Link>
-            {!authState.status ? (
-              <>
-                <Link to="/login"> Login </Link>
-                <Link to="/signup"> Signup </Link>
-              </>
-            ) : (
-              <>
-                <Link to="/createpost"> Create a Post </Link>
-                <button onClick={logout}> Logout </button>
-                {/* Use Link to navigate to the profile */}
-                <Link to={`/profile/${authState.id}`}>
-                  <h1>{authState.username}</h1>
-                </Link>
-              </>
-            )}
-          </div>
+          <nav className="navbar">
+            <div className="navbar-logo">Dare App</div>
+            <div className="navbar-links">
+              <Link to="/"> Home </Link>
+              {!authState.status ? (
+                <>
+                  <Link to="/login"> Login </Link>
+                  <Link to="/signup"> Signup </Link>
+                </>
+              ) : (
+                <>
+                  <Link to="/createpost"> Create a Post </Link>
+                  <Link to={`/profile/${authState.id}`}>
+                    {authState.username}
+                  </Link>
+                  <button className="logout-btn" onClick={logout}>
+                    Logout
+                  </button>
+                </>
+              )}
+            </div>
+          </nav>
           <Routes>
             <Route path="/" exact element={<Home />} />
             <Route path="/createpost" exact element={<CreatePost />} />

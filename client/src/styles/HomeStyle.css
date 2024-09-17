@@ -1,19 +1,81 @@
-.post-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+/* General styling */
+body {
+  background: url("https://logos-world.net/wp-content/uploads/2024/01/D.A.R.E-Logo.png")
+    no-repeat center center fixed;
+  background-size: cover; /* Ensures the image covers the entire background */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  padding-top: 60px;
 }
 
+.page-container {
+  min-height: 100vh;
+  padding-top: 60px; /* Adjust based on your navbar height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box,
+.other-page-content {
+  /* Common content styles here */
+  background-color: #e0e0e0;
+  width: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.navbar {
+  height: 60px; /* Specify height of navbar */
+  background-color: rgb(134, 134, 134);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: fixed; /* Ensures it's always at the top */
+  top: 0;
+  width: 98%;
+  z-index: 10; /* Ensure it stays above other content */
+}
+
+.content {
+  margin-top: 20px;
+}
+
+/* Container for posts */
+.posts-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Ensures exactly 2 columns */
+  gap: 20px; /* Reduce the gap to make posts closer together */
+  width: 100%;
+  max-width: 1800px; /* Adjust as needed */
+  padding: 30px;
+  margin: 0 auto; /* Centers the container horizontally */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* White background with some transparency */
+  border-radius: 8px;
+}
+
+/* Individual post styling */
 .post-box {
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
   padding: 15px;
-  width: 60%; /* Adjust the width as needed */
   background-color: #ffffff;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s;
+  border-radius: 8px;
+  align-items: center;
+  min-height: 400px; /* Ensure all posts have a consistent height */
 }
 
 .post-box:hover {
@@ -27,38 +89,46 @@
   background-color: #f4f4f4;
   padding: 5px;
   color: #333;
+  width: 100%;
+  min-height: 40px; /* Set a minimum height for the header */
 }
 
 .post-content {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1; /* Allows the content area to take up remaining space */
+  justify-content: space-between;
 }
 
 .post-photo {
-  flex: 1;
+  flex: none; /* No flex-grow so it doesn't shrink */
 }
 
 .post-photo img {
   width: 100%;
   height: auto;
+  max-height: 300px; /* You can adjust this value */
   border-radius: 5px;
+  object-fit: cover; /* Ensures the image covers the area */
 }
 
 .post-details {
-  flex: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  padding-left: 15px;
+  align-items: center; /* Center the text horizontally */
+  margin-top: 15px; /* Space between the image and the text */
 }
 
 .post-text {
-  font-size: 14px;
+  font-size: 16px; /* Increase text size slightly */
   margin-bottom: 10px;
   color: #333;
+  text-align: center; /* Center text below the image */
 }
 
 .post-dare {
-  font-size: 16px;
+  font-size: 18px; /* Increase dare text size */
   font-weight: bold;
   margin-bottom: 10px;
   background-color: #ffeb99;
@@ -67,6 +137,7 @@
   color: #8a6d3b;
   border: 1px solid #f5c518;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
 .post-footer {
@@ -107,7 +178,7 @@
 }
 
 .stars {
-  display: flex;
+  display: flex; /* Ensures stars are laid out in a row */
   cursor: pointer;
 }
 
@@ -119,9 +190,4 @@
 
 .star.filled {
   color: #ffd700; /* Gold for filled stars */
-}
-
-.star:hover,
-.star:hover ~ .star {
-  color: #ffcc00;
 }

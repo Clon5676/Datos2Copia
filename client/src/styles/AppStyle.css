@@ -1,9 +1,8 @@
 .App {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Aligns items to the left */
-  padding: 20px; /* Adds space from the top and sides (optional) */
-  align-items: center;
+  align-items: center; /* Center items horizontally */
+  padding: 20px; /* Adds space from the top and sides */
 }
 
 .App a {
@@ -11,4 +10,53 @@
   text-decoration: none;
   font-size: 18px;
   color: #333;
+}
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #c0392b; /* Dark red */
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-logo {
+  color: #ecf0f1; /* Light grey color */
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.navbar-links a {
+  color: #ecf0f1;
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.navbar-links a:hover {
+  background-color: #b03a2e; /* Slightly darker red on hover */
+}
+
+.logout-btn {
+  background-color: #e74c3c; /* Lighter red for logout button */
+  color: #ecf0f1;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #b03a2e; /* Slightly darker red on hover */
 }

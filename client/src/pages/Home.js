@@ -63,18 +63,29 @@ function Home() {
     }
   };
 
+  const [tempRating, setTempRating] = useState({}); // Manage temporary rating
+
   const renderStars = (postId) => {
     if (!authState.status) return null; // Don't render stars if user is not logged in
 
     const currentRating = userRatings[postId] || 0;
+    const currentTempRating = tempRating[postId] || 0; // Get temporary rating
     const stars = [];
 
     for (let i = 1; i <= 5; i++) {
       stars.push(
         <span
           key={i}
-          className={`star ${i <= currentRating ? "filled" : ""}`}
+          className={`star ${
+            i <= (currentTempRating || currentRating) ? "filled" : ""
+          }`}
           onClick={() => rateAPost(postId, i)}
+          onMouseEnter={() =>
+            setTempRating((prev) => ({ ...prev, [postId]: i }))
+          } // Handle hover effect
+          onMouseLeave={() =>
+            setTempRating((prev) => ({ ...prev, [postId]: 0 }))
+          } // Clear hover effect
         >
           ★
         </span>
@@ -85,7 +96,9 @@ function Home() {
   };
 
   return (
-    <div className="post-container">
+    <div className="posts-container">
+      {" "}
+      {/* Use the updated container class */}
       {listOfPosts.map((post, key) => (
         <div className="post-box" key={key}>
           <div
@@ -108,7 +121,6 @@ function Home() {
             </div>
           </div>
           <div className="post-footer">
-            {" "}
             My rating:
             {renderStars(post.id)} {/* Render star rating if logged in */}
             <div className="points">

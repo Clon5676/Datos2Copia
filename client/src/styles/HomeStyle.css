@@ -1,6 +1,7 @@
 /* General styling */
 body {
-  background: url('https://logos-world.net/wp-content/uploads/2024/01/D.A.R.E-Logo.png') no-repeat center center fixed;
+  background: url("https://logos-world.net/wp-content/uploads/2024/01/D.A.R.E-Logo.png")
+    no-repeat center center fixed;
   background-size: cover; /* Ensures the image covers the entire background */
   font-family: Arial, sans-serif;
   margin: 0;
@@ -16,7 +17,8 @@ body {
   align-items: center;
 }
 
-.login-box, .other-page-content {
+.login-box,
+.other-page-content {
   /* Common content styles here */
   background-color: #e0e0e0;
   width: 200px;
@@ -53,7 +55,12 @@ body {
   max-width: 1200px; /* Adjust as needed */
   padding: 10px;
   margin: 0 auto; /* Centers the container horizontally */
-  background: rgba(255, 255, 255, 0.8); /* White background with some transparency */
+  background: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* White background with some transparency */
   border-radius: 8px;
 }
 

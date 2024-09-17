@@ -15,12 +15,13 @@ Retos diarios, semanales, por años.
 
 PARA CORRER POR PRIMERA VEZ EL CODIGO
 
-1. En el root directory (DATOS2) correr:
+1. Se debe tener Node.js instalado
+2. En el root directory (DATOS2) correr:
    docker-compose up
-2. Ir a client y correr:
+3. Ir a client y correr:
    npm install
    npm start
-3. Ir a server y correrÑ
+4. Ir a server y correr:
    npm install
    npx sequelize db:seed:all
    npm start

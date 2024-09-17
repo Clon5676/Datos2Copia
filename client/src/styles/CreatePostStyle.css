@@ -32,7 +32,7 @@
 
 /* Form field styling */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom:20px;
   text-align: left; /* Align labels and inputs to the left */
 }
 
@@ -85,7 +85,7 @@
   width: 100%;
   height: auto;
   border-radius: 5px;
-  margin-bottom: 20px;
+  margin-bottom: 0px;
 }
 
 /* Responsive design for smaller screens */

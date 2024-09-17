@@ -51,7 +51,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* Ensures exactly 2 columns */
   gap: 20px; /* Reduce the gap to make posts closer together */
-  width: 200%;
+  width: 100%;
   max-width: 1800px; /* Adjust as needed */
   padding: 30px;
   margin: 0 auto; /* Centers the container horizontally */

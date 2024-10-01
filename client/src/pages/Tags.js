@@ -18,18 +18,16 @@ export default function Tags() {
   useEffect(() => {
     const fetchPostsAndTag = async () => {
       try {
-        const postsResponse = await axios.get(
-          `http://localhost:5000/posts/byTag/${id}`
-        );
-        setListOfPosts(postsResponse.data);
+        const postsResponse = await axios.get(`http://backend-service:5000/posts/byTag/${id}`);
+
 
         const dareResponse = await axios.get(
-          `http://localhost:5000/dares/${id}`
+          `http://backend-service:5000/dares/${id}`
         );
         setDare(dareResponse.data);
 
         const tagsResponse = await axios.get(
-          `http://localhost:5000/tags/${id}`
+          `http://backend-service:5000/tags/${id}`
         );
         console.log(tagsResponse.data);
         setTag(tagsResponse.data);
@@ -45,7 +43,7 @@ export default function Tags() {
     if (authState.status) {
       // Only fetch ratings if the user is logged in
       axios
-        .get("http://localhost:5000/ratings", {
+        .get("http://backend-service:5000/ratings", {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
         .then((response) => {
@@ -85,7 +83,7 @@ export default function Tags() {
         // Check if user is logged in before submitting
         axios
           .post(
-            "http://localhost:5000/ratings",
+            "http://backend-service:5000/ratings",
             { PostId: postId, ratingValue },
             { headers: { accessToken: localStorage.getItem("accessToken") } }
           )
@@ -121,7 +119,7 @@ export default function Tags() {
           <div className="post-content" onClick={() => handlePostClick(post)}>
             <div className="post-photo">
               <img
-                src={`http://localhost:5000${post.photoUrl}`}
+                src={`http://backend-service:5000${post.photoUrl}`}
                 alt="Post"
                 className="post-image"
               />

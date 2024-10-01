@@ -16,20 +16,20 @@ export default function Post() {
 
   useEffect(() => {
     // Obtener detalles del post
-    axios.get(`http://localhost:5000/posts/byId/${id}`).then((response) => {
+    axios.get(`http://backend-service:5000/posts/byId/${id}`).then((response) => {
       setPostObject(response.data);
       setUserRating(response.data.userRating || 0); // Set user rating
     });
 
     // Obtener comentarios del post
-    axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
+    axios.get(`http://backend-service:5000/comments/${id}`).then((response) => {
       setComments(response.data);
     });
 
     // Obtener ratings del post
     if (authState.status) {
       axios
-        .get(`http://localhost:5000/ratings/${id}`, {
+        .get(`http://backend-service:5000/ratings/${id}`, {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
         .then((response) => {
@@ -45,7 +45,7 @@ export default function Post() {
     // Obtener tags del dare si postObject.Dare está definido
     if (postObject.Dare && postObject.Dare.id) {
       axios
-        .get(`http://localhost:5000/dares/${postObject.Dare.id}`)
+        .get(`http://backend-service:5000/dares/${postObject.Dare.id}`)
         .then((response) => {
           setTags(response.data.Tags || []);
         });
@@ -55,12 +55,12 @@ export default function Post() {
   const handleCommentSubmit = (values, { resetForm }) => {
     axios
       .post(
-        "http://localhost:5000/comments",
+        "http://backend-service:5000/comments",
         { ...values, PostId: id },
         { headers: { accessToken: localStorage.getItem("accessToken") } }
       )
       .then(() => {
-        axios.get(`http://localhost:5000/comments/${id}`).then((response) => {
+        axios.get(`http://backend-service:5000/comments/${id}`).then((response) => {
           setComments(response.data);
         });
         resetForm();
@@ -72,7 +72,7 @@ export default function Post() {
 
   const deleteComment = (id) => {
     axios
-      .delete(`http://localhost:5000/comments/delete/${id}`, {
+      .delete(`http://backend-service:5000/comments/delete/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {
@@ -89,7 +89,7 @@ export default function Post() {
 
   const deletePost = (id) => {
     axios
-      .delete(`http://localhost:5000/posts/${id}`, {
+      .delete(`http://backend-service:5000/posts/${id}`, {
         headers: { accessToken: localStorage.getItem("accessToken") },
       })
       .then(() => {
@@ -109,14 +109,14 @@ export default function Post() {
     if (authState.status) {
       axios
         .post(
-          `http://localhost:5000/ratings`,
+          `http://backend-service:5000/ratings`,
           { PostId: id, ratingValue: rating },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         )
         .then(() => {
           setUserRating(rating);
           axios
-            .get(`http://localhost:5000/posts/byId/${id}`)
+            .get(`http://backend-service:5000/posts/byId/${id}`)
             .then((response) => {
               setPostObject(response.data);
             });
@@ -161,7 +161,7 @@ export default function Post() {
 
           <div className="post-photo">
             <img
-              src={`http://localhost:5000${postObject.photoUrl}`}
+              src={`http://backend-service:5000${postObject.photoUrl}`}
               alt="Post"
               className="post-image"
             />

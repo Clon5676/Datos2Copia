@@ -1,4 +1,4 @@
-version: "3"
+version: "3.8"
 services:
   mysql:
     image: mysql:latest
@@ -8,3 +8,40 @@ services:
       MYSQL_DATABASE: socialDareDB
     ports:
       - "3306:3306"
+    networks:
+      - app-network
+    restart: unless-stopped  # Reiniciar si hay errores inesperados
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: backend-service
+    environment:
+      - DB_HOST=mysql  # Este valor debe coincidir con el nombre del servicio de MySQL
+      - DB_USER=root
+      - DB_PASSWORD=password
+      - DB_NAME=socialDareDB
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+    restart: unless-stopped  # Reiniciar si hay errores inesperados
+
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: frontend-service
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+    restart: unless-stopped  # Reiniciar si hay errores inesperados
+
+networks:
+  app-network:

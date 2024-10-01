@@ -18,7 +18,7 @@ export default function CreatePost() {
       navigate("/login");
     }
     axios
-      .get("http://localhost:5000/dares/random")
+      .get("http://backend-service:5000/dares/random")
       .then((response) => {
         setDares(response.data);
       })
@@ -46,7 +46,7 @@ export default function CreatePost() {
     }
 
     axios
-      .post("http://localhost:5000/posts", formData, {
+      .post("http://backend-service:5000/posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data", // Required for file uploads
           accessToken: localStorage.getItem("accessToken"),

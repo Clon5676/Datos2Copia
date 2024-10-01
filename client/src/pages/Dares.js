@@ -17,14 +17,9 @@ function Dares() {
   useEffect(() => {
     const fetchPostsAndDare = async () => {
       try {
-        const postsResponse = await axios.get(
-          `http://localhost:5000/posts/byDare/${id}`
-        );
-        setListOfPosts(postsResponse.data);
-
-        const dareResponse = await axios.get(
-          `http://localhost:5000/dares/${id}`
-        );
+        const postsResponse = await axios.get(`http://backend-service:5000/posts/byDare/${id}`);
+        const dareResponse = await axios.get(`http://backend-service:5000/dares/${id}`);
+        
         setDare(dareResponse.data);
       } catch (error) {
         console.error("Error fetching posts or dare:", error);
@@ -38,7 +33,7 @@ function Dares() {
     if (authState.status) {
       // Only fetch ratings if the user is logged in
       axios
-        .get("http://localhost:5000/ratings", {
+        .get("http://backend-service:5000/ratings", {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
         .then((response) => {
@@ -60,7 +55,7 @@ function Dares() {
       // Check if user is logged in before submitting
       axios
         .post(
-          "http://localhost:5000/ratings",
+          "http://backend-service:5000/ratings",
           { PostId: postId, ratingValue },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         )
@@ -116,7 +111,7 @@ function Dares() {
           <div className="post-content" onClick={() => handlePostClick(post)}>
             <div className="post-photo">
               <img
-                src={`http://localhost:5000${post.photoUrl}`}
+                src={`http://backend-service:5000${post.photoUrl}`}
                 alt="Post"
                 className="post-image"
               />

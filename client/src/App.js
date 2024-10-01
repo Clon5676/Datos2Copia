@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/auth/check", {
+      .get("http://backend-service:5000/auth/check", {  // Cambiado localhost a backend-service
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },

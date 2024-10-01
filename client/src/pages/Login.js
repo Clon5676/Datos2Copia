@@ -14,7 +14,7 @@ function Login() {
   const login = () => {
     const data = { username: username, password: password };
     // Chequea si el usuario existe en la base de datos
-    axios.post("http://localhost:5000/auth/login", data).then((response) => {
+    axios.post("http://backend-service:5000/auth/login", data).then((response) => {
       // Da un error si no está
       if (response.data.error) {
         alert(response.data.error);

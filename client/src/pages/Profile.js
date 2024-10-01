@@ -13,10 +13,10 @@ export default function Profile() {
   const { authState } = useContext(AuthContext);
 
   useEffect(() => {
-    axios.get(`http://localhost:5000/auth/basicinfo/${id}`).then((response) => {
+    axios.get(`http://backend-service:5000/auth/basicinfo/${id}`).then((response) => {
       setUsername(response.data.username);
     });
-    axios.get(`http://localhost:5000/posts/byuserid/${id}`).then((response) => {
+    axios.get(`http://backend-service:5000/posts/byuserid/${id}`).then((response) => {
       setListOfPosts(response.data);
     });
   }, [id]);
@@ -25,7 +25,7 @@ export default function Profile() {
     if (authState.status) {
       // Only fetch ratings if the user is logged in
       axios
-        .get("http://localhost:5000/ratings", {
+        .get("http://backend-service:5000/ratings", {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
         .then((response) => {
@@ -47,7 +47,7 @@ export default function Profile() {
       // Check if user is logged in before submitting
       axios
         .post(
-          "http://localhost:5000/ratings",
+          "http://backend-service:5000/ratings",
           { PostId: postId, ratingValue },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         )
@@ -100,7 +100,7 @@ export default function Profile() {
             <div className="post-content" onClick={() => handlePostClick(post)}>
               <div className="post-photo">
                 <img
-                  src={`http://localhost:5000${post.photoUrl}`}
+                  src={`http://backend-service:5000${post.photoUrl}`}
                   alt="Post"
                   className="post-image"
                 />

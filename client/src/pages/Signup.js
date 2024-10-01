@@ -23,7 +23,7 @@ function Signup() {
   };
 
   const onSubmit = (data) => {
-    axios.post("http://localhost:5000/auth", data).then((response) => {
+    axios.post("http://backend-service:5000/auth", data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);
       } else {

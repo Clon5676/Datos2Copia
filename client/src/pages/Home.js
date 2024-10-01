@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/posts")
+      .get("http://backend-service:5000/posts")
       .then((response) => {
         setListOfPosts(response.data);
       })
@@ -25,7 +25,7 @@ function Home() {
     if (authState.status) {
       // Only fetch ratings if the user is logged in
       axios
-        .get("http://localhost:5000/ratings", {
+        .get("http://backend-service:5000/ratings", {
           headers: { accessToken: localStorage.getItem("accessToken") },
         })
         .then((response) => {
@@ -47,7 +47,7 @@ function Home() {
       // Check if user is logged in before submitting
       axios
         .post(
-          "http://localhost:5000/ratings",
+          "http://backend-service:5000/ratings",
           { PostId: postId, ratingValue },
           { headers: { accessToken: localStorage.getItem("accessToken") } }
         )
@@ -110,7 +110,7 @@ function Home() {
           <div className="post-content" onClick={() => handlePostClick(post)}>
             <div className="post-photo">
               <img
-                src={`http://localhost:5000${post.photoUrl}`}
+                src={`http://backend-service:5000${post.photoUrl}`}
                 alt="Post"
                 className="post-image"
               />
